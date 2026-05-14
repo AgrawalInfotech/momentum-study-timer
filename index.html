@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="zen-matcha">
+<head><meta name="google-site-verification" content="-cJyrLaXXHeJSAYMVQgYA9yMcYHELbggCLNQstQAbz4" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Momentum | Premium Study Timer</title>
+    <meta name="description" content="Momentum is a premium, aesthetic study timer and focus tracker. Perfect for deep work, Pomodoro sessions, and exam preparation. Free online stopwatch with custom analytics.">
+    <meta name="keywords" content="aesthetic study timer, pomodoro timer online, focus tracker, JEE study timer, minimalist stopwatch, deep work app, study timer">
+    <meta name="Ansh" content="Agrawal Infotech">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' stroke='%23A3B18A' stroke-width='10' fill='none'/><circle cx='50' cy='50' r='15' fill='%232D3748'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js');
+            });
+        }
+    </script>
+    <style>
+        :root { --font-family: 'Inter', sans-serif; --transition-speed: 0.3s; }
+
+        /* --- Themes --- */
+        [data-theme="zen-matcha"] { --bg-color: #F9FAF6; --surface-color: #F0F2EA; --primary-text: #2D3748; --accent-color: #A3B18A; --accent-hover: #8b9973; --secondary-text: #718096; --border-color: rgba(113, 128, 150, 0.2); }
+        [data-theme="midnight-focus"] { --bg-color: #121212; --surface-color: #1E1E1E; --primary-text: #E2E8F0; --accent-color: #ffffff; --accent-hover: #7c3aed; --secondary-text: #94A3B8; --border-color: rgba(148, 163, 184, 0.2); }
+        [data-theme="nordic-monochrome"] { --bg-color: #FFFFFF; --surface-color: #F3F4F6; --primary-text: #111827; --accent-color: #000000; --accent-hover: #374151; --secondary-text: #6B7280; --border-color: #E5E7EB; }
+        [data-theme="deep-space"] { --bg-color: #071531; --surface-color: #151A22; --primary-text: #E5E7EB; --accent-color: #38BDF8; --accent-hover: #0284C7; --secondary-text: #9CA3AF; --border-color: rgba(156, 163, 175, 0.2); }
+        [data-theme="crimson-night"] { --bg-color: #1A1A1A; --surface-color: #242424; --primary-text: #EDEDED; --accent-color: #E11D48; --accent-hover: #BE123C; --secondary-text: #A3A3A3; --border-color: rgba(163, 163, 163, 0.2); }
+        [data-theme="terminal-hacker"] { --bg-color: #000000; --surface-color: #0A0A0A; --primary-text: #10B981; --accent-color: #059669; --accent-hover: #047857; --secondary-text: #047857; --border-color: rgba(16, 185, 129, 0.3); --font-family: monospace; }
+        [data-theme="cafe-mocha"] { --bg-color: #FAEDE3; --surface-color: #F1E0D6; --primary-text: #4A3B32; --accent-color: #8E6E53; --accent-hover: #6B513C; --secondary-text: #968376; --border-color: rgba(142, 110, 83, 0.2); } 
+        [data-theme="lavender-haze"] { --bg-color: #262142; --surface-color: #2A253E; --primary-text: #E6E1FA; --accent-color: #B28DFF; --accent-hover: #9667E0; --secondary-text: #A49FBE; --border-color: rgba(178, 141, 255, 0.2); }
+        [data-theme="sakura-blossom"] { --bg-color: #FFF5F7; --surface-color: #FFEAEE; --primary-text: #594A4E; --accent-color: #FF8FAB; --accent-hover: #FB6F92; --secondary-text: #A69095; --border-color: rgba(255, 143, 171, 0.2); }
+        [data-theme="dark-cocoa"] { --bg-color: #1A1412; --surface-color: #2D2422; --primary-text: #F3E9DD; --accent-color: #D4A373; --accent-hover: #FAEDCD; --secondary-text: #A68A80; --border-color: rgba(212, 163, 115, 0.2); }
+        [data-theme="currant-mint"] { --bg-color: #280851; --surface-color: #523578; --primary-text: #EAE6F3; --accent-color: #00FFB2; --accent-hover: #FFF05A; --secondary-text: #9B8DBC; --border-color: rgba(0, 255, 178, 0.2); }
+        [data-theme="science-blueprint"] { --bg-color: #001841; --surface-color: #131E35; --primary-text: #FFFFFF; --accent-color: #9c1111; --accent-hover: #90E0EF; --secondary-text: #8E9EBC; --border-color: rgba(72, 202, 228, 0.2); }
+        [data-theme="floodlight-pitch"] { --bg-color: #0B1A12; --surface-color: #152E20; --primary-text: #E8F5E9; --accent-color: #69F0AE; --accent-hover: #B9F6CA; --secondary-text: #8FA896; --border-color: rgba(105, 240, 174, 0.2); }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-family); background-color: var(--bg-color); color: var(--primary-text); display: flex; flex-direction: column; min-height: 100vh; overflow: hidden; transition: background-color var(--transition-speed), color var(--transition-speed); }
+
+        /* --- Header --- */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 2rem 3rem; width: 100%; flex-wrap: wrap; gap: 1rem; }
+        .logo { font-size: 1.25rem; font-weight: 600; letter-spacing: 0.05em; }
+        .header-controls { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+
+        /* --- Premium Dropdown Styling --- */
+        .custom-select-wrapper { position: relative; display: inline-block; perspective: 1000px; }
+        .theme-selector {
+            appearance: none; -webkit-appearance: none; font-family: var(--font-family);
+            background-color: var(--surface-color); color: var(--primary-text);
+            border: 1px solid var(--border-color); padding: 0.6rem 2.5rem 0.6rem 1.2rem;
+            border-radius: 12px; font-size: 0.85rem; font-weight: 500; cursor: pointer;
+            outline: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(8px);
+        }
+        .theme-selector:hover {
+            border-color: var(--accent-color); transform: translateY(-1px);
+            box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.08);
+        }
+        .theme-selector:focus { border-color: var(--accent-color); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 30%, transparent); }
+        
+        .custom-select-wrapper::after {
+            content: '▼'; font-size: 0.55rem; color: var(--secondary-text);
+            position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+            pointer-events: none; transition: color 0.3s ease;
+        }
+        .custom-select-wrapper:hover::after { color: var(--accent-color); }
+        
+        .theme-selector option { background-color: var(--bg-color); color: var(--primary-text); padding: 12px; font-weight: 500; }
+        .theme-selector optgroup { font-weight: 600; color: var(--secondary-text); font-style: normal; }
+
+        .toggle-container { display: flex; align-items: center; gap: 0.25rem; background-color: var(--surface-color); padding: 0.25rem; border-radius: 24px; border: 1px solid var(--border-color); transition: background-color var(--transition-speed); }
+        .toggle-btn { background: none; border: none; color: var(--secondary-text); cursor: pointer; font-family: inherit; font-size: 0.85rem; font-weight: 500; padding: 0.4rem 1rem; border-radius: 20px; transition: all var(--transition-speed); }
+        .toggle-btn.active { background-color: var(--bg-color); color: var(--primary-text); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        /* --- Main Content --- */
+        main { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; padding: 2rem; }
+        .display-section { text-align: center; margin-bottom: 3rem; position: relative; min-height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+        .timer-box { background-color: color-mix(in srgb, var(--surface-color) 60%, transparent); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 2rem 4rem; border-radius: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.1); border: 1px solid var(--border-color); margin-bottom: 2.5rem; transition: all var(--transition-speed); display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 350px; min-height: 240px; }
+        .time-display { font-size: 7.5rem; font-weight: 300; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; transition: opacity var(--transition-speed); display: flex; align-items: center; justify-content: center; }
+        .time-main-part { display: inline-block; text-align: center; width: 1.2em; }
+        .time-colon { display: inline-block; text-align: center; width: 0.3em; transform: translateY(-0.05em); }
+
+        .timer-input-container { display: none; justify-content: center; align-items: center; gap: 0.5rem; opacity: 0; transition: opacity var(--transition-speed); }
+        .timer-input-container.visible { display: flex; opacity: 1; }
+        .time-input { font-family: var(--font-family); font-size: 6rem; font-weight: 300; color: var(--primary-text); background: transparent; border: none; width: 130px; text-align: center; outline: none; transition: color var(--transition-speed); -moz-appearance: textfield; padding: 0; border-radius: 16px; }
+        .time-input:hover, .time-input:focus { background-color: rgba(0,0,0,0.03); }
+        
+        [data-theme="midnight-focus"] .time-input:hover, [data-theme="deep-space"] .time-input:hover, [data-theme="crimson-night"] .time-input:hover, [data-theme="terminal-hacker"] .time-input:hover, [data-theme="lavender-haze"] .time-input:hover, [data-theme="ocean-abyss"] .time-input:hover, [data-theme="dark-cocoa"] .time-input:hover, [data-theme="currant-mint"] .time-input:hover, [data-theme="science-blueprint"] .time-input:hover, [data-theme="floodlight-pitch"] .time-input:hover { background-color: rgba(255,255,255,0.05); }
+
+        .time-input::-webkit-outer-spin-button, .time-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .input-label { font-size: 4rem; color: var(--secondary-text); font-weight: 300; margin: 0 0.2rem; padding-bottom: 0.5rem; }
+
+        .controls { display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem; }
+        .quick-presets { display: none; gap: 1.5rem; justify-content: center; margin-bottom: 1rem; }
+        .quick-presets.visible { display: flex; }
+        .preset-link { background: none; border: none; color: var(--secondary-text); font-family: var(--font-family); font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: color var(--transition-speed); padding: 0.2rem 0.5rem; }
+        .preset-link:hover { color: var(--primary-text); }
+
+        .btn { font-family: var(--font-family); font-size: 1.1rem; font-weight: 500; padding: 1rem 3rem; border-radius: 50px; border: none; cursor: pointer; transition: all 0.2s ease; background-color: transparent; color: var(--primary-text); border: 1px solid var(--secondary-text); }
+        .btn:hover { background-color: var(--surface-color); }
+        .btn-primary { background-color: var(--accent-color); color: var(--bg-color); border-color: var(--accent-color); min-width: 140px; }
+        .btn-primary:hover { background-color: var(--accent-hover); border-color: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .btn-primary:active { transform: translateY(0); }
+
+        /* --- Footer --- */
+        footer { padding: 2rem 3rem; width: 100%; max-width: 600px; margin: 0 auto; text-align: center; }
+        .progress-text { font-size: 0.9rem; color: var(--secondary-text); margin-bottom: 1rem; font-weight: 500; line-height: 1.5; }
+        .progress-bar-container { width: 100%; height: 6px; background-color: var(--surface-color); border-radius: 3px; overflow: hidden; margin-bottom: 1.5rem; border: 1px solid var(--border-color); }
+        .progress-bar { height: 100%; background-color: var(--accent-color); width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1), background-color var(--transition-speed); }
+        
+        .developer-credit { font-size: 0.75rem; color: var(--secondary-text); opacity: 0.3; letter-spacing: 0.05em; transition: opacity 0.3s; margin-top: 2rem; }
+        .developer-credit:hover { opacity: 0.8; }
+
+        .goal-container { font-size: 0.85rem; color: var(--secondary-text); margin-top: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+        .goal-input { background: transparent; border: 1px solid transparent; border-bottom: 1px solid var(--border-color); color: var(--primary-text); font-family: var(--font-family); width: 35px; text-align: center; font-size: 0.85rem; outline: none; transition: border-color var(--transition-speed); -moz-appearance: textfield; padding: 0.1rem; }
+        .goal-input:hover, .goal-input:focus { border-bottom-color: var(--accent-color); }
+        .goal-input::-webkit-outer-spin-button, .goal-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+        /* Modals */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity var(--transition-speed); z-index: 100; }
+        .modal-overlay.visible { opacity: 1; pointer-events: auto; }
+        .modal-content { background-color: var(--surface-color); border: 1px solid var(--border-color); padding: 2rem; border-radius: 24px; width: 90%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); transform: translateY(20px); transition: transform var(--transition-speed); }
+        .modal-overlay.visible .modal-content { transform: translateY(0); }
+
+        @keyframes pulse-bg { 0% { background-color: var(--bg-color); } 50% { background-color: var(--accent-color); } 100% { background-color: var(--bg-color); } }
+        .alarm-active { animation: pulse-bg 2s infinite; }
+        .alarm-active .timer-box { border-color: var(--accent-color); }
+
+        /* History Chart Styles */
+        .history-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.8rem; }
+        .history-date { width: 45px; font-size: 0.85rem; color: var(--secondary-text); font-weight: 500;}
+        .history-bar-bg { flex: 1; height: 12px; background: color-mix(in srgb, var(--border-color) 40%, transparent); border-radius: 6px; overflow: hidden; }
+        .history-bar-fill { height: 100%; background: var(--accent-color); border-radius: 6px; transition: width 1s ease-out; }
+        .history-time { width: 70px; text-align: right; font-size: 0.85rem; font-weight: 500; color: var(--primary-text);}
+
+        .personal-credit {
+    font-size: 0.55rem; /* Even smaller for that minimalist look */
+    opacity: 0.8;
+    margin-top: 2px;
+    letter-spacing: 0.05em;
+    text-transform: none; /* Keeps the "by Ansh!" looking natural */
+}
+
+/* --- Predictive Insights Panel --- */
+        .insights-panel {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .insight-box {
+            flex: 1;
+            background: color-mix(in srgb, var(--surface-color) 40%, transparent);
+            border: 1px solid var(--border-color);
+            padding: 1rem 0.5rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .insight-label {
+            font-size: 0.65rem;
+            color: var(--secondary-text);
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+        .insight-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary-text);
+        }
+
+/* Update the main container to center the text */
+.fixed-credit {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    text-align: right; /* Aligns both lines to the right corner */
+    font-size: 0.7rem;
+    color: var(--secondary-text);
+    opacity: 0.4;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+    </style>
+</head>
+<body>
+
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 2rem 3rem; width: 100%;">
+        
+        <div class="logo" style="flex: 1; text-align: left;">Momentum</div>
+        
+        <div style="display: flex; gap: 1.5rem; align-items: center; justify-content: center; flex: 1;">
+            <button class="toggle-btn" id="btn-history" style="color: var(--secondary-text); border: 1px solid var(--border-color);">📊 History</button>
+            <button class="toggle-btn" id="btn-install" style="display: none; color: var(--accent-color); border: 1px solid var(--accent-color);">📲 Install App</button>
+            <div class="toggle-container">
+                <button class="toggle-btn active" id="mode-stopwatch">Stopwatch</button>
+                <button class="toggle-btn" id="mode-timer">Timer</button>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: center; justify-content: flex-end; flex: 1;">
+            
+            <div class="custom-select-wrapper" id="alarm-wrapper" style="display: none;">
+                <select id="alarm-selector" class="theme-selector" aria-label="Select Alarm">
+                    <option value="" disabled>── Timer End Sound ──</option>
+                    <option value="chime" selected>Soft Chime</option>
+                    <option value="bell">Classic Bell</option>
+                    <option value="digital">Digital Beep</option>
+                </select>
+            </div>
+            <div class="fixed-credit">
+                    Developer - Agrawal Infotech
+            <div class="personal-credit">(by Ansh!)</div>
+            </div>
+          <div class="custom-select-wrapper">
+                <select id="theme-selector" class="theme-selector" aria-label="Select Theme" onchange="document.documentElement.setAttribute('data-theme', this.value)">
+                    <optgroup label="Minimalist">
+                        <option value="zen-matcha" selected>Zen Matcha</option>
+                        <option value="nordic-monochrome">Nordic Monochrome</option>
+                        <option value="cafe-mocha">Cafe Mocha</option>
+                        <option value="sakura-blossom">Sakura Blossom</option>
+                    </optgroup>
+                    <optgroup label="Dark & Focus">
+                        <option value="midnight-focus">Midnight Focus</option>
+                        <option value="deep-space">Deep Space</option>
+                        <option value="dark-cocoa">Dark Cocoa</option>
+                        <option value="lavender-haze">Lavender Haze</option>
+                    </optgroup>
+                    <optgroup label="Specialty">
+                        <option value="terminal-hacker">Terminal / Hacker</option>
+                        <option value="crimson-night">Crimson Night</option>
+                        <option value="currant-mint">Black Currant & Mint</option>
+                        <option value="science-blueprint">Science Blueprint</option>
+                        <option value="floodlight-pitch">Floodlight Pitch</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="display-section">
+            <div class="timer-box">
+                <div class="time-display" id="time-display">
+                    <span id="time-main">
+                        <span class="time-main-part" id="time-h">00</span><span class="time-colon">:</span><span class="time-main-part" id="time-m">00</span><span class="time-colon">:</span><span class="time-main-part" id="time-s">00</span>
+                    </span>
+                </div>
+                
+                <div class="timer-input-container" id="timer-input-container">
+                    <input type="number" class="time-input" id="input-hours" min="0" max="99" value="00" aria-label="Hours">
+                    <span class="input-label">:</span>
+                    <input type="number" class="time-input" id="input-minutes" min="0" max="59" value="50" aria-label="Minutes">
+                    <span class="input-label">:</span>
+                    <input type="number" class="time-input" id="input-seconds" min="0" max="59" value="00" aria-label="Seconds">
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-primary" id="btn-start-pause">Start</button>
+                <button class="btn" id="btn-reset">Reset</button>
+            </div>
+
+            <div class="quick-presets" id="quick-presets">
+                <button class="preset-link" data-min="30">[ 30m ]</button>
+                <button class="preset-link" data-min="60">[ 1h ]</button>
+                <button class="preset-link" data-min="120">[ 2h ]</button>
+                <button class="preset-link" data-min="180">[ 3h ]</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="progress-text" id="progress-text">
+            <div id="total-focus-text">Today's Focus: 0h 0m</div>
+            <div class="goal-container">
+                Daily Goal: <input type="number" id="daily-goal-input" min="1" max="24" value="8" class="goal-input">h
+            </div>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+    </footer>
+
+    <div class="modal-overlay" id="history-modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <h3 style="margin-bottom: 0.2rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+                📊 Analytics & History
+            </h3>
+            <p style="font-size: 0.75rem; color: var(--secondary-text); opacity: 0.7; margin-bottom: 1.5rem; margin-top: 0;">
+                (Reload at the end of the day to see final stats)
+            </p>
+            
+            <div class="insights-panel" id="insights-panel">
+                <div class="insight-box">
+                    <div class="insight-label">🔥 Best Day</div>
+                    <div class="insight-value" id="insight-best-day">--</div>
+                </div>
+                <div class="insight-box">
+                    <div class="insight-label">📈 Trend</div>
+                    <div class="insight-value" id="insight-trend">--</div>
+                </div>
+                <div class="insight-box">
+                    <div class="insight-label">🎯 Goal Hit</div>
+                    <div class="insight-value" id="insight-consistency">0/7</div>
+                </div>
+            </div>
+
+            <div id="history-chart" style="display: flex; flex-direction: column;"></div>
+            <button class="btn btn-primary" id="btn-close-history" style="margin-top: 2rem; width: 100%; padding: 0.75rem;">Close</button>
+        </div>
+    </div>
+    <div style="max-width: 600px; margin: 4rem auto; text-align: center; color: var(--secondary-text); font-size: 0.8rem; opacity: 0.8;">
+        <h1 style="font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem;">Momentum: Aesthetic Study Timer</h1>
+        <p>Momentum is a free, minimalist Pomodoro timer and focus tracker designed for students and professionals. Maximize your deep work sessions with customizable themes, built-in analytics, and a predictive focus engine. Whether you are tracking daily goals or grinding through complex problem sets, Momentum keeps you accountable.</p>
+    </div>
+
+    <script>
+        // --- LOCAL STORAGE LOGIC ---
+        function getTodayKey() {
+            const d = new Date();
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function saveSessionToStorage(addedMs) {
+            if(addedMs <= 0) return;
+            const key = getTodayKey();
+            const currentTotal = parseInt(localStorage.getItem(key)) || 0;
+            localStorage.setItem(key, currentTotal + addedMs);
+        }
+
+        // --- GLOBAL VARIABLES ---
+        let isTimerMode = false;
+        let isRunning = false;
+        let mainInterval;
+
+        let stopwatchStartTime = 0;
+        let stopwatchElapsedTime = 0; 
+        
+        let timerEndTime = 0;
+        let timerRemaining = 0;
+        let timerOriginalMs = 0; // NEW: Memorizes your total study time
+
+        let previousSessionTime = parseInt(localStorage.getItem(getTodayKey())) || 0;
+
+        // Grabbing UI Elements
+        const startBtn = document.getElementById('btn-start-pause');
+        const resetBtn = document.getElementById('btn-reset');
+        const timeH = document.getElementById('time-h');
+        const timeM = document.getElementById('time-m');
+        const timeS = document.getElementById('time-s');
+
+        const modeStopwatch = document.getElementById('mode-stopwatch');
+        const modeTimer = document.getElementById('mode-timer');
+        const timeDisplay = document.getElementById('time-display');
+        const timerInputContainer = document.getElementById('timer-input-container');
+        const quickPresets = document.getElementById('quick-presets');
+        
+        const progressTextContainer = document.getElementById('progress-text'); 
+        const progressBarContainer = document.querySelector('.progress-bar-container');
+        const totalFocusInner = document.getElementById('total-focus-text');
+        const progressBar = document.getElementById('progress-bar');
+        const dailyGoalInput = document.getElementById('daily-goal-input');
+
+        const inputHours = document.getElementById('input-hours');
+        const inputMinutes = document.getElementById('input-minutes');
+        const inputSeconds = document.getElementById('input-seconds');
+        const presetButtons = document.querySelectorAll('.preset-link');
+
+        const alarmWrapper = document.getElementById('alarm-wrapper'); 
+        const alarmSelector = document.getElementById('alarm-selector'); 
+
+        const btnHistory = document.getElementById('btn-history');
+        const historyModal = document.getElementById('history-modal');
+        const btnCloseHistory = document.getElementById('btn-close-history');
+        const historyChart = document.getElementById('history-chart');
+
+        // --- APP INSTALL (PWA) LOGIC ---
+        let deferredPrompt;
+        const installBtn = document.getElementById('btn-install');
+
+        // Catch the browser's hidden install event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the default browser pop-up
+            e.preventDefault();
+            // Save the event so we can trigger it later
+            deferredPrompt = e;
+            // Un-hide our custom install button
+            installBtn.style.display = 'inline-block';
+        });
+
+        // When the user clicks our button
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                // Show the official browser install prompt
+                deferredPrompt.prompt();
+                
+                // Wait to see what the user chose
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('App Installed!');
+                    installBtn.style.display = 'none'; // Hide button after install
+                }
+                
+                // Clear the saved prompt
+                deferredPrompt = null;
+            }
+        });
+
+        // Hide the button if they already installed it
+        window.addEventListener('appinstalled', () => {
+            installBtn.style.display = 'none';
+        });
+
+        // --- TAB TITLE ENGINE ---
+        function updateTabTitle() {
+            if (isTimerMode) {
+                let h = (inputHours.value || "0").toString().padStart(2, '0');
+                let m = (inputMinutes.value || "0").toString().padStart(2, '0');
+                let s = (inputSeconds.value || "0").toString().padStart(2, '0');
+                document.title = `[ ${h}:${m}:${s} ]`;
+            } else {
+                document.title = `[ ${timeH.innerText}:${timeM.innerText}:${timeS.innerText} ]`;
+            }
+        }
+
+        inputHours.addEventListener('input', updateTabTitle);
+        inputMinutes.addEventListener('input', updateTabTitle);
+        inputSeconds.addEventListener('input', updateTabTitle);
+
+        // --- WEB AUDIO API SYNTHESIZER ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playAlarmSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+
+            if (type === 'chime') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(880, now);
+                gainNode.gain.setValueAtTime(0, now);
+                gainNode.gain.linearRampToValueAtTime(0.5, now + 0.05);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 2);
+                osc.start(now); osc.stop(now + 2);
+            } else if (type === 'bell') {
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(1046.50, now);
+                gainNode.gain.setValueAtTime(0, now);
+                gainNode.gain.linearRampToValueAtTime(0.5, now + 0.05);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 1.5);
+                
+                const osc2 = audioCtx.createOscillator(); const gain2 = audioCtx.createGain();
+                osc2.type = 'triangle'; osc2.frequency.setValueAtTime(1046.50, now + 0.2);
+                osc2.connect(gain2); gain2.connect(audioCtx.destination);
+                gain2.gain.setValueAtTime(0, now + 0.2);
+                gain2.gain.linearRampToValueAtTime(0.5, now + 0.25);
+                gain2.gain.exponentialRampToValueAtTime(0.01, now + 1.7);
+                osc.start(now); osc.stop(now + 1.5);
+                osc2.start(now + 0.2); osc2.stop(now + 1.7);
+            } else if (type === 'digital') {
+                osc.type = 'square'; osc.frequency.setValueAtTime(800, now);
+                gainNode.gain.setValueAtTime(0, now);
+                for(let i=0; i<3; i++) {
+                    gainNode.gain.setValueAtTime(0.15, now + 0.01 + (i*0.2));
+                    gainNode.gain.setValueAtTime(0, now + 0.1 + (i*0.2));
+                }
+                osc.start(now); osc.stop(now + 0.8);
+            } else if (type === 'gong') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(150, now);
+                gainNode.gain.setValueAtTime(0, now);
+                gainNode.gain.linearRampToValueAtTime(0.8, now + 0.1);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 4);
+                osc.start(now); osc.stop(now + 4);
+            }
+        }
+
+        alarmSelector.addEventListener('change', function() {
+            playAlarmSound(this.value);
+        });
+
+        // --- 1. UI Toggle Logic ---
+        modeStopwatch.addEventListener('click', () => {
+            if (isRunning) return; 
+            isTimerMode = false;
+            modeStopwatch.classList.add('active');
+            modeTimer.classList.remove('active');
+            timeDisplay.style.display = 'flex';
+            timerInputContainer.classList.remove('visible');
+            quickPresets.classList.remove('visible');
+            progressTextContainer.style.display = 'block';
+            progressBarContainer.style.display = 'block';
+            alarmWrapper.style.display = 'none'; 
+            updateProgress(stopwatchElapsedTime);
+            updateTabTitle();
+        });
+
+        modeTimer.addEventListener('click', () => {
+            if (isRunning) return; 
+            isTimerMode = true;
+            modeTimer.classList.add('active');
+            modeStopwatch.classList.remove('active');
+            timeDisplay.style.display = 'none';
+            timerInputContainer.classList.add('visible');
+            quickPresets.classList.add('visible');
+            progressTextContainer.style.display = 'none';
+            progressBarContainer.style.display = 'none';
+            alarmWrapper.style.display = 'inline-block'; 
+            updateTabTitle();
+        });
+
+        presetButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mins = parseInt(btn.getAttribute('data-min'));
+                const h = Math.floor(mins / 60);
+                const m = mins % 60;
+                inputHours.value = h.toString().padStart(2, '0');
+                inputMinutes.value = m.toString().padStart(2, '0');
+                inputSeconds.value = "00";
+                updateTabTitle();
+            });
+        });
+
+        // --- 2. Progress Bar Logic ---
+        function updateProgress(currentElapsed) {
+            let totalMs = previousSessionTime + currentElapsed;
+            let totalMin = Math.floor(totalMs / 60000);
+            let h = Math.floor(totalMin / 60);
+            let m = totalMin % 60;
+            
+            totalFocusInner.innerText = `Today's Focus: ${h}h ${m}m`;
+
+            let goalHours = parseFloat(dailyGoalInput.value) || 1;
+            let goalMs = goalHours * 3600000;
+            let percentage = Math.min((totalMs / goalMs) * 100, 100); 
+            progressBar.style.width = percentage + '%';
+        }
+
+        dailyGoalInput.addEventListener('input', () => {
+            updateProgress(!isTimerMode ? stopwatchElapsedTime : 0);
+        });
+
+        updateProgress(0);
+
+        // --- 3. The Core Engines ---
+        function updateStopwatch() {
+            stopwatchElapsedTime = Date.now() - stopwatchStartTime;
+            let diffInHrs = stopwatchElapsedTime / 3600000;
+            let hh = Math.floor(diffInHrs);
+            let diffInMin = (diffInHrs - hh) * 60;
+            let mm = Math.floor(diffInMin);
+            let diffInSec = (diffInMin - mm) * 60;
+            let ss = Math.floor(diffInSec);
+
+            timeH.innerText = hh.toString().padStart(2, "0");
+            timeM.innerText = mm.toString().padStart(2, "0");
+            timeS.innerText = ss.toString().padStart(2, "0");
+            updateProgress(stopwatchElapsedTime);
+            updateTabTitle();
+        }
+
+        function updateTimer() {
+            timerRemaining = timerEndTime - Date.now();
+            
+            if (timerRemaining <= 0) {
+                clearInterval(mainInterval);
+                timerRemaining = 0;
+                isRunning = false;
+                startBtn.innerText = "Start";
+                document.body.classList.add('alarm-active');
+                
+                playAlarmSound(alarmSelector.value);
+
+                // FORCE THE SCREEN TO ZERO
+                inputHours.value = "00";
+                inputMinutes.value = "00";
+                inputSeconds.value = "00";
+
+                // SAVE THE CORRECT ORIGINAL TIME
+                saveSessionToStorage(timerOriginalMs);
+                previousSessionTime += timerOriginalMs; 
+                updateProgress(0);
+                
+                document.title = "[ 00:00:00 ] Momentum"; 
+                return;
+            }
+
+            let totalSec = Math.ceil(timerRemaining / 1000);
+            let h = Math.floor(totalSec / 3600);
+            let m = Math.floor((totalSec % 3600) / 60);
+            let s = totalSec % 60;
+
+            let strH = h.toString().padStart(2, '0');
+            let strM = m.toString().padStart(2, '0');
+            let strS = s.toString().padStart(2, '0');
+
+            inputHours.value = strH;
+            inputMinutes.value = strM;
+            inputSeconds.value = strS;
+            
+            document.title = `[ ${strH}:${strM}:${strS} ] Momentum`;
+        }
+
+        // --- 4. Master Buttons ---
+        startBtn.addEventListener('click', function() {
+            document.body.classList.remove('alarm-active');
+
+            if (!isRunning) {
+                if (isTimerMode) {
+                    let h = parseInt(inputHours.value) || 0;
+                    let m = parseInt(inputMinutes.value) || 0;
+                    let s = parseInt(inputSeconds.value) || 0;
+                    timerRemaining = (h * 3600 + m * 60 + s) * 1000;
+
+                    if (timerRemaining > 0) {
+                        timerOriginalMs = timerRemaining; // MEMORIZE THE TIME!
+                        timerEndTime = Date.now() + timerRemaining;
+                        updateTimer(); 
+                        mainInterval = setInterval(updateTimer, 1000);
+                        startBtn.innerText = "Pause";
+                        isRunning = true;
+                    }
+                } else {
+                    stopwatchStartTime = Date.now() - stopwatchElapsedTime; 
+                    updateStopwatch(); 
+                    mainInterval = setInterval(updateStopwatch, 1000);
+                    startBtn.innerText = "Pause";
+                    isRunning = true;
+                }
+            } else {
+                clearInterval(mainInterval);
+                startBtn.innerText = "Start";
+                isRunning = false;
+            }
+        });
+
+        resetBtn.addEventListener('click', function() {
+            clearInterval(mainInterval);
+            startBtn.innerText = "Start";
+            isRunning = false;
+            document.body.classList.remove('alarm-active');
+
+            if (isTimerMode) {
+                inputHours.value = "00";
+                inputMinutes.value = "50";
+                inputSeconds.value = "00";
+            } else {
+                saveSessionToStorage(stopwatchElapsedTime);
+                previousSessionTime += stopwatchElapsedTime; 
+                updateProgress(0); 
+                
+                stopwatchElapsedTime = 0;
+                timeH.innerText = "00";
+                timeM.innerText = "00";
+                timeS.innerText = "00";
+            }
+            updateTabTitle();
+        });
+
+        window.addEventListener('beforeunload', function() {
+            if (stopwatchElapsedTime > 0) {
+                saveSessionToStorage(stopwatchElapsedTime);
+            }
+        });
+
+        // --- 5. History Modal Logic (With Predictive Engine) ---
+        btnHistory.addEventListener('click', () => {
+            renderHistoryChart();
+            historyModal.classList.add('visible');
+        });
+
+        btnCloseHistory.addEventListener('click', () => {
+            historyModal.classList.remove('visible');
+        });
+
+        function renderHistoryChart() {
+            historyChart.innerHTML = ''; 
+            let daysData = [];
+            
+            const dailyGoalHrs = parseFloat(dailyGoalInput.value) || 8;
+            const goalMs = dailyGoalHrs * 3600000; 
+
+            let totalMsRecent = 0; 
+            let totalMsPast = 0;   
+            let bestDay = { name: '--', ms: 0 };
+            let daysHitGoal = 0;
+
+            for (let i = 6; i >= 0; i--) {
+                let d = new Date();
+                d.setDate(d.getDate() - i);
+                
+                let year = d.getFullYear();
+                let month = String(d.getMonth() + 1).padStart(2, '0');
+                let day = String(d.getDate()).padStart(2, '0');
+                let key = `${year}-${month}-${day}`;
+                
+                let ms = parseInt(localStorage.getItem(key)) || 0;
+                let dateStr = d.toLocaleDateString('en-US', { weekday: 'short' });
+                
+                daysData.push({ dateStr: dateStr, ms: ms });
+
+                if (ms > bestDay.ms) bestDay = { name: dateStr, ms: ms };
+                if (ms >= goalMs) daysHitGoal++;
+                
+                if (i <= 2) totalMsRecent += ms; 
+                else totalMsPast += ms;          
+            }
+
+            let avgRecent = totalMsRecent / 3;
+            let avgPast = totalMsPast / 4;
+            let trendText = "Stable ➖";
+            if (avgRecent > avgPast * 1.1) trendText = "Rising ↗️";
+            if (avgRecent < avgPast * 0.9) trendText = "Slipping ↘️";
+            if (totalMsRecent === 0 && totalMsPast === 0) trendText = "Need Data";
+
+            let bestDayEl = document.getElementById('insight-best-day');
+            let trendEl = document.getElementById('insight-trend');
+            let consistencyEl = document.getElementById('insight-consistency');
+
+            if(bestDayEl) bestDayEl.innerText = bestDay.ms > 0 ? bestDay.name : '--';
+            if(trendEl) trendEl.innerText = trendText;
+            if(consistencyEl) consistencyEl.innerText = `${daysHitGoal}/7 Days`;
+
+            daysData.forEach(data => {
+                let totalSecs = Math.floor(data.ms / 1000);
+                let h = Math.floor(totalSecs / 3600);
+                let m = Math.floor((totalSecs % 3600) / 60);
+                
+                let timeText = "";
+                if (h > 0) timeText = `${h}h ${m}m`;
+                else if (m > 0) timeText = `${m}m`;
+                else timeText = `0m`; 
+                
+                let percent = Math.min((data.ms / goalMs) * 100, 100); 
+                if (data.ms > 0 && percent < 2) percent = 2; 
+
+                let row = document.createElement('div');
+                row.className = 'history-row';
+                row.innerHTML = `
+                    <div class="history-date">${data.dateStr}</div>
+                    <div class="history-bar-bg">
+                        <div class="history-bar-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="history-time">${timeText}</div>
+                `;
+                historyChart.appendChild(row);
+
+                setTimeout(() => {
+                    row.querySelector('.history-bar-fill').style.width = percent + '%';
+                }, 50);
+            });
+        }
+
+    </script> 
+    
+</body>
+</html>
